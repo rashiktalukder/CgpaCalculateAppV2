@@ -25,13 +25,14 @@ import com.rashik.cgpa.model.Semester;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeFragmentInterface{
 
     private FragmentHomeBinding binding;
     GradeRepository repository;
     RecyclerView recyclerView;
     HomeRecyclerAdapter homeRecyclerAdapter;
     List<Semester>allSemesters = new ArrayList<>();
+    DataController controller;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class HomeFragment extends Fragment {
 
         homeRecyclerAdapter=new HomeRecyclerAdapter(allSemesters);
         recyclerView.setAdapter(homeRecyclerAdapter);
+        controller=DataController.getInstance();
+        controller.setHomeFragmentInterface(this);
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,4 +117,9 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onSemesterItemClicked(Semester semester) {
+        Toast.makeText(getActivity(), "Name: "+semester.getSemesterName(), Toast.LENGTH_SHORT).show();
+
+    }
 }

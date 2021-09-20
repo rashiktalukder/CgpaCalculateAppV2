@@ -21,7 +21,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
         this.mySemesterList = mySemesterList;
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder{
+    public class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView semesterNameTextView,semesterCreditTextView;
 
@@ -29,6 +29,13 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
             super(itemView);
             semesterNameTextView=itemView.findViewById(R.id.semesterName_Item_TextView);
             semesterCreditTextView=itemView.findViewById(R.id.semesterCredit_Item_TextView);
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            DataController.instance.getHomeFragmentInterface().onSemesterItemClicked(mySemesterList.get(getAdapterPosition()));
 
         }
     }
