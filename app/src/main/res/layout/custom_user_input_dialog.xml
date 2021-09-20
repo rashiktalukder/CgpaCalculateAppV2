@@ -21,12 +21,13 @@
     </TextView>
 
     <EditText
-        android:id="@+id/dialo_semesterName_edittext"
+        android:id="@+id/dialog_semesterName_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:paddingLeft="10dp"
         android:hint="@string/dialog_edittest_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +44,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialo_semesterName_edittext"></Button>
+        app:layout_constraintTop_toBottomOf="@+id/dialog_semesterName_edittext"></Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
