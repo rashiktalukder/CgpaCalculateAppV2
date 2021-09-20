@@ -119,7 +119,10 @@ public class HomeFragment extends Fragment implements HomeFragmentInterface{
 
     @Override
     public void onSemesterItemClicked(Semester semester) {
-        Toast.makeText(getActivity(), "Name: "+semester.getSemesterName(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "Name: "+semester.getSemesterName(), Toast.LENGTH_SHORT).show();
+        controller.setCurrentSemester(semester);
+        NavHostFragment.findNavController(HomeFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
 
     }
 }

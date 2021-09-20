@@ -2,6 +2,8 @@ package com.rashik.cgpa.home;
 
 import android.provider.ContactsContract;
 
+import com.rashik.cgpa.model.Semester;
+
 public class DataController {
 
     static DataController instance;
@@ -17,6 +19,10 @@ public class DataController {
 
     }
     HomeFragmentInterface homeFragmentInterface;
+    Semester currentSemester;
+
+
+//getter setter Func.
 
     public HomeFragmentInterface getHomeFragmentInterface() {
         return homeFragmentInterface;
@@ -24,5 +30,13 @@ public class DataController {
 
     public void setHomeFragmentInterface(HomeFragmentInterface homeFragmentInterface) {
         this.homeFragmentInterface = homeFragmentInterface;
+    }
+
+    public Semester getCurrentSemester() {
+        return currentSemester;
+    }
+
+    public void setCurrentSemester(Semester currentSemester) {
+        this.currentSemester = currentSemester;
     }
 }
