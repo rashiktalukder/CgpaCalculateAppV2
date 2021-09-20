@@ -14,17 +14,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.rashik.cgpa.GradeRepository;
 import com.rashik.cgpa.R;
 import com.rashik.cgpa.databinding.FragmentHomeBinding;
+import com.rashik.cgpa.model.Semester;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    GradeRepository repository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        repository=new GradeRepository(getActivity().getApplication());
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +49,7 @@ public class HomeFragment extends Fragment {
                         {
                             String semesterName=semesterNameEditText.getText().toString();
                             Toast.makeText(getActivity(), semesterName+" Is your semester name", Toast.LENGTH_LONG).show();
+                            insertSemester(semesterName);
                             dialog.dismiss();
                         }
                     }
@@ -55,6 +61,12 @@ public class HomeFragment extends Fragment {
 
         return binding.getRoot();
 
+    }
+
+    private void insertSemester(String semesterName)
+    {
+        Semester tempSemester=new Semester(semesterName,0.0);
+        repository.InsertSemester(tempSemester);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -74,5 +86,6 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 
 }
