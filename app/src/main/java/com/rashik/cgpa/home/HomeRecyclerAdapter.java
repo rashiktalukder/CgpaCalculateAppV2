@@ -44,8 +44,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
         Semester currentSemester=mySemesterList.get(position);
 
-        holder.semesterNameTextView.setText(currentSemester.getSemesterName());
-        holder.semesterCreditTextView.setText(currentSemester.getSemesterCredit()+"");
+        holder.semesterNameTextView.setText("Semester: "+currentSemester.getSemesterName());
+        holder.semesterCreditTextView.setText("Credit: "+currentSemester.getSemesterCredit()+"");
 
     }
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.rashik.cgpa.GradeRepository;
@@ -19,10 +22,16 @@ import com.rashik.cgpa.R;
 import com.rashik.cgpa.databinding.FragmentHomeBinding;
 import com.rashik.cgpa.model.Semester;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     GradeRepository repository;
+    RecyclerView recyclerView;
+    HomeRecyclerAdapter homeRecyclerAdapter;
+    List<Semester>allSemesters = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +39,19 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         repository=new GradeRepository(getActivity().getApplication());
+
+        recyclerView=binding.getRoot().findViewById(R.id.home_RecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        allSemesters=repository.GetAllSemesters();
+
+        /*for (int i=0;i<100;i++)
+        {
+            allSemesters.add(new Semester("Semester Name"+i,00.00));
+        }*/
+
+        homeRecyclerAdapter=new HomeRecyclerAdapter(allSemesters);
+        recyclerView.setAdapter(homeRecyclerAdapter);
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
