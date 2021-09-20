@@ -88,7 +88,11 @@ public class HomeFragment extends Fragment {
     private void insertSemester(String semesterName)
     {
         Semester tempSemester=new Semester(semesterName,0.0);
+        allSemesters.add(tempSemester);
+        homeRecyclerAdapter.notifyDataSetChanged();
         repository.InsertSemester(tempSemester);
+
+
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
