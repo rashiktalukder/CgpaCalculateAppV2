@@ -21,6 +21,10 @@ public class Semester {
         //this.semesterCourses = semesterCourses;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getSemesterName() {
         return semesterName;
     }

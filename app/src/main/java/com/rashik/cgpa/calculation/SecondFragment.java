@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,10 +13,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.rashik.cgpa.R;
 import com.rashik.cgpa.databinding.FragmentSecondBinding;
 import com.rashik.cgpa.home.DataController;
+import com.rashik.cgpa.model.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SecondFragment extends Fragment {
 
@@ -27,6 +34,9 @@ public class SecondFragment extends Fragment {
     TextView cgpaTextView;
     double totalCredit=0;
     double productOfGpaAndCredit=0;
+    RecyclerView recyclerView;
+    CourseRecyclerAdapter adapter;
+    List<Course>myCourses=new ArrayList<>();
 
 
     @Override
@@ -39,6 +49,13 @@ public class SecondFragment extends Fragment {
         gpaText=binding.getRoot().findViewById(R.id.editTextGpa);
         addCourseButton=binding.getRoot().findViewById(R.id.addButton);
         cgpaTextView=binding.getRoot().findViewById(R.id.cgpaTextView);
+
+        recyclerView=binding.getRoot().findViewById(R.id.courseRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter=new CourseRecyclerAdapter(myCourses);
+
+        recyclerView.setAdapter(adapter);
 
 
         addCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +89,10 @@ public class SecondFragment extends Fragment {
         totalCredit+=creditValue;
         double cgpa=productOfGpaAndCredit/totalCredit;
         cgpaTextView.setText(String.format("CGPA: %.2f",cgpa));
+
+        Course course=new Course(gpaValue,creditValue,controller.getCurrentSemester().getId());
+        myCourses.add(course);
+        adapter.notifyDataSetChanged();
 
 
     }

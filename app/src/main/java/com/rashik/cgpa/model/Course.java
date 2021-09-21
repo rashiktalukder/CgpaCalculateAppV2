@@ -15,9 +15,8 @@ public class Course {
 
 
 
-    public Course(int id, String courseName, Double courseGpa, Double courseCredit, int semesterId) {
-        this.id = id;
-        this.courseName = courseName;
+    public Course( Double courseGpa, Double courseCredit, int semesterId) {
+
         this.courseGpa = courseGpa;
         this.courseCredit = courseCredit;
         this.semesterId = semesterId;
