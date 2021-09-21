@@ -23,6 +23,9 @@ public interface CourseDao {
     @Query("select * from Course where semesterId Like :semesterId")
     List<Course> GetCourseBySemesterId(int semesterId);
 
+    @Insert
+    void InsertCourseList (List<Course> courses);
+
     @Query("Delete from Course")
     void DeleteAllCourses();
 }

@@ -1,5 +1,7 @@
 package com.rashik.cgpa.calculation;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.rashik.cgpa.GradeRepository;
 import com.rashik.cgpa.R;
 import com.rashik.cgpa.databinding.FragmentSecondBinding;
 import com.rashik.cgpa.home.DataController;
@@ -37,6 +41,8 @@ public class SecondFragment extends Fragment {
     RecyclerView recyclerView;
     CourseRecyclerAdapter adapter;
     List<Course>myCourses=new ArrayList<>();
+    FloatingActionButton fab;
+    GradeRepository repository;
 
 
     @Override
@@ -44,6 +50,9 @@ public class SecondFragment extends Fragment {
 
         binding = FragmentSecondBinding.inflate(inflater, container, false);
         controller=DataController.getInstance();
+
+        repository=new GradeRepository(getActivity().getApplication());
+        myCourses=repository.GetCourseById(controller.getCurrentSemester().getId());
 
         creditText=binding.getRoot().findViewById(R.id.editTextCredit);
         gpaText=binding.getRoot().findViewById(R.id.editTextGpa);
@@ -56,6 +65,9 @@ public class SecondFragment extends Fragment {
         adapter=new CourseRecyclerAdapter(myCourses);
 
         recyclerView.setAdapter(adapter);
+
+        fab= binding.fabCourseFragment;
+
 
 
         addCourseButton.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +82,36 @@ public class SecondFragment extends Fragment {
                     CalculateCgpa(gpaText.getText().toString(),creditText.getText().toString());
                 }
 
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity()).setMessage("Do you want to save..?")
+                        .setTitle("Warning!!")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                if(myCourses==null || myCourses.size()==0)
+                                {
+                                    Toast.makeText(getActivity(), "Add a course first", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    repository.InsertCourse(myCourses);
+                                    Toast.makeText(getActivity(), "No Tension! Courses Saved", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).show();
             }
         });
 
