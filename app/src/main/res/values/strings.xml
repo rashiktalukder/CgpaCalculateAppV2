@@ -15,4 +15,7 @@
     <string name="dialog_title">Create new semester</string>
     <string name="dialog_edittest_hint">Enter semester name</string>
     <string name="create">Create</string>
+
+    //Second Fragment
+    <string name="title">Please Insert Your Course Credit and Gpa</string>
 </resources>
