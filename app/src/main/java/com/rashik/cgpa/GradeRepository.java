@@ -59,6 +59,10 @@ public class GradeRepository {
         return mySemesterList;
 
     }
+    public void DeleteCourse(Course course)
+    {
+        new DeleteCourseTask(courseDao).execute(course);
+    }
 
 
 
@@ -99,7 +103,7 @@ public class GradeRepository {
         }
     }
 
-    private static class courseListTask extends AsyncTask<List<Course>,Void,Void>
+    private static class courseListTask extends AsyncTask<List<Course>  ,Void,Void>
     {
         CourseDao dao;
         courseListTask(CourseDao courseDao)
@@ -127,6 +131,24 @@ public class GradeRepository {
         @Override
         protected List<Course> doInBackground(Integer... integers) {
             return dao.GetCourseBySemesterId(integers[0]);
+        }
+    }
+
+    private static class DeleteCourseTask extends AsyncTask<Course,Void,Void>
+    {
+        CourseDao dao;
+
+        DeleteCourseTask(CourseDao courseDao)
+        {
+
+            dao=courseDao;
+        }
+
+        @Override
+        protected Void doInBackground(Course... courses) {
+
+            dao.DeleteCourse(courses[0]);
+            return null;
         }
     }
 

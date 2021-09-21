@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,12 +53,18 @@ public class SecondFragment extends Fragment {
         controller=DataController.getInstance();
 
         repository=new GradeRepository(getActivity().getApplication());
+
         myCourses=repository.GetCourseById(controller.getCurrentSemester().getId());
+        cgpaTextView=binding.getRoot().findViewById(R.id.cgpaTextView);
+        if(myCourses.size()>0)
+        {
+            CalculateCgpaList(myCourses);
+        }
 
         creditText=binding.getRoot().findViewById(R.id.editTextCredit);
         gpaText=binding.getRoot().findViewById(R.id.editTextGpa);
         addCourseButton=binding.getRoot().findViewById(R.id.addButton);
-        cgpaTextView=binding.getRoot().findViewById(R.id.cgpaTextView);
+
 
         recyclerView=binding.getRoot().findViewById(R.id.courseRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -66,9 +73,21 @@ public class SecondFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        fab= binding.fabCourseFragment;
+        fab= binding.getRoot().findViewById(R.id.fab_CourseFragment);
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                Delete(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(recyclerView);
 
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,9 +107,10 @@ public class SecondFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getActivity()).setMessage("Do you want to save..?")
+                new AlertDialog.Builder(getActivity())
+                        .setMessage("Do you want to save..?")
                         .setTitle("Warning!!")
-                        .setCancelable(true)
+                        .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -116,10 +136,30 @@ public class SecondFragment extends Fragment {
         });
 
 
+
+
+
+
+
+
+
+
         Toast.makeText(getActivity(), controller.getCurrentSemester().getSemesterName(), Toast.LENGTH_SHORT).show();
 
         return binding.getRoot();
 
+    }
+
+    private void CalculateCgpaList(List<Course> myCourses) {
+        for (int i=0;i< myCourses.size();i++)
+        {
+            Course temp= myCourses.get(i);
+            totalCredit+= temp.getCourseCredit();
+            productOfGpaAndCredit+= (temp.getCourseCredit()* temp.getCourseGpa());
+        }
+
+        double cgpa=productOfGpaAndCredit/totalCredit;
+        cgpaTextView.setText(String.format("CGPA: %.2f",cgpa));
     }
 
 
@@ -139,6 +179,13 @@ public class SecondFragment extends Fragment {
 
     }
 
+    private void Delete(int position){
+
+        Course course= myCourses.get(position);
+        repository.DeleteCourse(course);
+        myCourses.remove(course);
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onDestroyView() {

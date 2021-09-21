@@ -30,13 +30,13 @@ public class Course {
         this.semesterId = semesterId;
     }
 
-    public String getCourseName() {
+    /*public String getCourseName() {
         return courseName;
     }
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
-    }
+    }*/
 
     public Double getCourseGpa() {
         return courseGpa;
